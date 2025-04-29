@@ -1,7 +1,6 @@
 const users = new Map([
-    ["user1", "pass123"],
-    ["admin", "admin123"],
-    ["test", "test123"]
+    ["Triveq", "7894561235"],
+    ["Leo", "123456789"],
   ]);
   
   const loginForm = document.getElementById("loginForm");
