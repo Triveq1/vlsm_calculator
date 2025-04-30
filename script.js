@@ -5,6 +5,7 @@ var login_table = {
 function create_size_inputs(){
     const count = parseInt(document.getElementById("number_of_Lans").value);
     const container = document.getElementById("lan_size_container");
+    container.innerHTML = "";
     for (let i = 0; i<count;i++){
         const text = document.createElement("p");
         text.textContent = "Lan " + i;
@@ -20,6 +21,7 @@ function create_size_inputs(){
 
 function calculate_vlsm() {
     const container =  documnet.getElementById("vlsm_table");
+    container.innerHTML = "";
     const lans = parseInt(document.getElementById("number_of_Lans").value);
     const table = document.createElement("table");
     table.border = "1";
