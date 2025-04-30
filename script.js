@@ -28,7 +28,7 @@ function calculate_vlsm() {
         const row = document.createElement("tr");
         for (let x = 0 ; x < 6 ; x++) {
             const cell_1 = document.createElement("td");
-            cell_1.textContent = "";
+            cell_1.textContent = "Lan "+i;
             row.appendChild(cell_1);
         }
         table.appendChild(row);
