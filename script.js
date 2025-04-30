@@ -16,6 +16,7 @@ function create_size_inputs(){
 }
 
 function calculate_vlsm() {
+    const arr_of_base2 = [2, 4, 8, 16, 32, 64, 128, 256];
     const container =  documnet.getElementById("vlsm_table");
     container.innerHTML = "";
     const lans = parseInt(document.getElementById("number_of_Lans").value);
@@ -38,7 +39,7 @@ function calculate_vlsm() {
         var host_count = parseInt(document.getElemntById(a).value);
         e_host_count.textContent = ""+host_count;
         host_count += 2;
-
+        
         
             
         row.appendChild(e_lan_number);
