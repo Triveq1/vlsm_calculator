@@ -7,15 +7,11 @@ function create_size_inputs(){
     const container = document.getElementById("lan_size_container");
     container.innerHTML = "";
     for (let i = 0; i<count;i++){
-        const text = document.createElement("p");
-        text.textContent = "Lan " + i;
-        container.appendChild(text);
         const input = document.createElement("input");
         input.type = "number";
         input.id = "lan_size_"+i ;
         input.placeholder = "LAN "+i+" size";
         container.appendChild(input);
-        container.appendChild(document.createElement("br"));
     }
 }
 
