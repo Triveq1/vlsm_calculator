@@ -47,8 +47,22 @@ function calculate_vlsm() {
         lan_array.push(document.getElementById("lan_size_"+f).value);
     }
     console.log(len_array);
-    len_array = bubbleSort(len_array);
+    lan_array = bubbleSort(len_array);
     console.log(len_array);
+
+    var current_net = 0;
+    var lan_net_arr = [];
+    for (let a = 0 ; i<lans; a++){
+        var size = lan_array[a];
+        for (num = 0 ; num < 8; num++);
+            if (size <= arr_of_base2[num]) {
+                lan_net_arr.push(arr_of_base2[num]+current_net);
+                current_net += arr_of_base2[num];
+            }
+    }
+
+
+    
     for (let i = 0 ; i<lans ; i++){
         const row = document.createElement("tr");
 
@@ -66,9 +80,6 @@ function calculate_vlsm() {
         e_host_count.textContent = ""+host_count;
         host_count += 2;
         
-        var network_adr = 0;
-        
-            
         row.appendChild(e_lan_number);
         row.appendChild(e_host_count);
         row.appendChild(e_network_adr);
