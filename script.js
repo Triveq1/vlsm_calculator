@@ -37,10 +37,16 @@ function calculate_vlsm() {
         var a = "lan_size_"+i
         var host_count = parseInt(document.getElemntById(a).value);
         e_host_count.textContent = ""+host_count;
-            
+        host_count += 2;
+
+        
             
         row.appendChild(e_lan_number);
         row.appendChild(e_host_count);
+        row.appendChild(e_network_adr);
+        row.appendChild(e_usable_range);
+        row.appendChild(e_broadcast);
+        row.appendChild(e_mask);
         
         table.appendChild(row);
     }
