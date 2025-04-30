@@ -9,15 +9,15 @@
 <body>
   <div class="container">
     <h2>Login</h2>
-    <form id="loginForm">
-      <input type="text" id="username" placeholder="Username" required />
-      <input type="password" id="password" placeholder="Password" required />
-      <button onclick="log_in()">Log In</button>
+    <form id="VLSM Calculator">
+      <p>IPv4</p> <input type="text" id="IPv4_1" placeholder="192" required/> <p>.</p> <input type="text" id="IPv4_2" placeholder="168" required/> <p>.</p>  <input type="text" id="IPv4_3" placeholder="10" required/> <p>.</p>  <input type="text" id="IPv4_4" placeholder="0" required/>
+      <input type="text" id="number_of_Lans" placeholder="Enter the total number of Lans/Wans" required />
+      <button onclick="create_size_inputs()">Generate table</button>
+      <div id="lan_size_container"></div>
+      <input type="text" id="username" placeholder="Username"/>
+      <input type="password" id="password" placeholder="Username"/>
+      <button onclick="calculate_vlsm()">Calculate</button>
     </form>
-    <p id="error" class="error"></p>
-    <div id="secretMessage" class="hidden">
-      <h3>🎉 Welcome! You have successfully logged in.</h3>
-    </div>
   </div>
 
   <script src="script.js"></script>
