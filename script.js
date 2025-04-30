@@ -2,6 +2,25 @@ var login_table = {
     "admin":"1234"
 };
 
+function bubbleSort(arr) {
+  let n = arr.length;
+  let swapped;
+  do {
+    swapped = false;
+    for (let i = 0; i < n - 1; i++) {
+      if (arr[i] > arr[i + 1]) {
+        // Swap elements
+        [arr[i], arr[i + 1]] = [arr[i + 1], arr[i]];
+        swapped = true;
+      }
+    }
+    n--;
+  } while (swapped);
+  return arr;
+}
+
+
+
 function create_size_inputs(){
     const count = parseInt(document.getElementById("number_of_Lans").value);
     const container = document.getElementById("lan_size_container");
@@ -22,7 +41,14 @@ function calculate_vlsm() {
     const lans = parseInt(document.getElementById("number_of_Lans").value);
     const table = document.createElement("table");
     table.border = "1";
+    var lan_array = [];
 
+    for (let f = 0; f<lans; f++){
+        lan_array.push(document.getElementById("lan_size_"+f).value);
+    }
+    
+    len_array = bubbleSort(len_array);
+    console.log(len_array)
     for (let i = 0 ; i<lans ; i++){
         const row = document.createElement("tr");
 
@@ -40,6 +66,7 @@ function calculate_vlsm() {
         e_host_count.textContent = ""+host_count;
         host_count += 2;
         
+        var network_adr = 0;
         
             
         row.appendChild(e_lan_number);
