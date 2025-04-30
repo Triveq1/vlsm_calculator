@@ -18,3 +18,20 @@ function create_size_inputs(){
     }
 }
 
+function calculate_vlsm() {
+    const container =  documnet.getElementById("vlsm_table");
+    const lans = parseInt(document.getElementById("number_of_Lans").value);
+    const table = document.createElement("table");
+    table.border = "1";
+
+    for (let i = 0 ; i<lans ; i++){
+        const row = document.createElement("tr");
+        for (let x = 0 ; x < 6 ; x++) {
+            const cell_1 = document.createElement("td");
+            cell_1.textContent = "";
+            row.appendChild(cell_1);
+        }
+        table.appendChild(row);
+    }
+    container.appendChild(table);
+}
