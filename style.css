@@ -29,6 +29,7 @@ button {
   border: none;
   border-radius: 12px;
   cursor: pointer;
+  margin-top: 5px;
 }
 button:hover {
   background-color: #a00000;
@@ -48,7 +49,7 @@ button:active {
   border-radius: 50px;
   box-shadow:  10px 7px rgba(150, 150, 150, 0.25); 
   text-align: left;
-  width: 500px;
+  width: 750px;
 }
 
 
@@ -69,13 +70,21 @@ button:active {
 .IPv4_input_box_in_one_row{
     display: flex;
     gap: 5px;
+    width: 350px;
+    margin-top: 0px;
   }
 .IPv4_input_box_in_one_row_top_text {
     text-align: left;
     color: white;
-    line-height: 0px;
+    line-height: 5px;
+    margin-bottom: 5px;
 }
-
+.IPv4_input_box_in_one_row_top_text_2 {
+  text-align: left;
+  color: white;
+  line-height: 5px;
+  margin-bottom: 10px;
+}
 
 
 
@@ -83,6 +92,8 @@ button:active {
 
 .input_total_number_of_lan_wan {
   width: 150px;
+  margin-bottom: 5px;
+  margin-top: 5px;
 }
 
 
@@ -110,7 +121,37 @@ button:active {
 
 
 
+.input_login_box{
+  width: 150px;
+  margin-top: 1px;
+  margin-bottom: 5px;
+}
 
+
+
+
+
+
+
+.table_box_text {
+  color: white;
+  border: 1px solid white;
+  padding: 15px;
+  text-align: center;
+}
+
+.vlsm_table {
+  border-collapse: collapse;
+}
+
+
+
+
+.error_text {
+  color: red;
+  font-size: 25px;
+  text-align: center;
+}
 
 
 
