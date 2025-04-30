@@ -46,9 +46,9 @@ function calculate_vlsm() {
     for (let f = 0; f<lans; f++){
         lan_array.push(document.getElementById("lan_size_"+f).value);
     }
-    
+    console.log(len_array);
     len_array = bubbleSort(len_array);
-    console.log(len_array)
+    console.log(len_array);
     for (let i = 0 ; i<lans ; i++){
         const row = document.createElement("tr");
 
