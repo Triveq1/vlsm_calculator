@@ -12,13 +12,13 @@
     <form id="VLSM Calculator">
       <p>IPv4 : </p> 
       <div class="ipv4_input_row">
-        <input type="text" id="ipv41" placeholder="192">
-        <input type="text" id="ipv42" placeholder="168">
-        <input type="text" id="ipv43" placeholder="10">
-        <input type="text" id="ipv44" placeholder="0">
+        <input type="number" id="ipv41" placeholder="192">
+        <input type="number" id="ipv42" placeholder="168">
+        <input type="number" id="ipv43" placeholder="10">
+        <input type="number" id="ipv44" placeholder="0">
       </div>
       
-      <input type="text" id="number_of_Lans" placeholder="Enter the total number of Lans/Wans" required />
+      <input type="number" id="number_of_Lans" placeholder="Enter the total number of Lans/Wans" required />
       <button onclick="create_size_inputs()">Generate table</button>
       <div id="lan_size_container"></div>
       <input type="text" id="username" placeholder="Username"/>
