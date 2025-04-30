@@ -7,7 +7,11 @@ body {
     align-items: center;
     height: 100vh;
   }
-  
+  .ipv4_input_row{
+      display: flex;
+      gap: 10px;
+    }
+
   .container {
     background: white;
     padding: 30px;
