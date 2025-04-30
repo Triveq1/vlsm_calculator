@@ -12,7 +12,7 @@ function create_size_inputs(){
         const input = document.createElement("input");
         input.type = "number";
         input.id = "lan_size_"+i ;
-        input.palceholder = "LAN "+i+" size";
+        input.placeholder = "LAN "+i+" size";
         container.appendChild(input);
         container.appendChild(document.createElement("br"));
     }
