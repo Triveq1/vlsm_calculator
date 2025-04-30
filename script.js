@@ -28,11 +28,24 @@ function calculate_vlsm() {
 
     for (let i = 0 ; i<lans ; i++){
         const row = document.createElement("tr");
-        for (let x = 0 ; x < 6 ; x++) {
-            const cell_1 = document.createElement("td");
-            cell_1.textContent = "Lan "+i;
-            row.appendChild(cell_1);
-        }
+
+        const e_lan_number = document.createElement("td");
+        const e_host_count = document.createElement("td");
+        const e_network_adr = document.createElement("td");
+        const e_usable_range = document.createElement("td");
+        const e_broadcast = document.createElement("td");
+        const e_mask = document.createElement("td");
+            
+        e_lan_number.textContent = "Lan "+i;
+            
+        var a = "lan_size_"+i
+        var host_count = parseInt(document.getElemntById(a).value);
+        e_host_count.textContent = ""+host_count;
+            
+            
+        row.appendChild(e_lan_number);
+        row.appendChild(e_host_count);
+        
         table.appendChild(row);
     }
     container.appendChild(table);
