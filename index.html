@@ -7,7 +7,6 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <a href="https://forms.gle/EGDNmoXanV2QtezS6">Visit</a>
   <div class="container">
     <h2>Login</h2>
     <form id="VLSM Calculator">
@@ -20,11 +19,12 @@
       </div>
       
       <input type="number" id="number_of_Lans" placeholder="Enter the total number of Lans/Wans" required />
-      <button onclick="create_size_inputs()">Generate table</button>
+      <button onclick="create_size_inputs()">Generate table 1</button>
       <div id="lan_size_container"></div>
       <input type="text" id="username" placeholder="Username"/>
       <input type="password" id="password" placeholder="Password"/>
       <button onclick="calculate_vlsm()">Calculate</button>
+      <div id="vlsm_table"></div>
     </form>
   </div>
 
