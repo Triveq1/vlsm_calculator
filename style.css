@@ -51,6 +51,8 @@ button:active {
   box-shadow:  10px 7px rgba(150, 150, 150, 0.25); 
   text-align: left;
   width: 750px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 
@@ -169,7 +171,6 @@ button:active {
   border-collapse: collapse;
   margin-top: 15px;
 }
-
 
 
 
