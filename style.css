@@ -44,6 +44,7 @@ button:active {
 
 .container {
   margin-top: 120px;
+  margin-bottom: 120px;
   background: black;
   padding: 30px;
   border-radius: 50px;
@@ -69,9 +70,10 @@ button:active {
 
 .IPv4_input_box_in_one_row{
     display: flex;
-    gap: 5px;
+    gap: 2px;
     width: 350px;
     margin-top: 0px;
+    height: 50px;
   }
 .IPv4_input_box_in_one_row_top_text {
     text-align: left;
@@ -79,11 +81,23 @@ button:active {
     line-height: 5px;
     margin-bottom: 5px;
 }
+.IPv4_input_box_style {
+  background-color: black;
+  color: white;
+  font-size: 22px;
+} 
 .IPv4_input_box_in_one_row_top_text_2 {
   text-align: left;
   color: white;
   line-height: 5px;
   margin-bottom: 10px;
+}
+.IPv4_bold_font_for_prefix {
+  text-align: left;
+  color: white;
+  line-height: 5px;
+  margin-bottom: 5px;
+  font-size: 25px;
 }
 
 
@@ -92,10 +106,14 @@ button:active {
 
 .input_total_number_of_lan_wan {
   width: 150px;
+  background-color: black;
+  color: white;
   margin-bottom: 5px;
   margin-top: 5px;
+  font-size: 20px;
+  height: 15px;
+  width: 100px;
 }
-
 
 
 
@@ -112,8 +130,11 @@ button:active {
   margin-bottom: 0px;
 }
 .input_network_size_box {
-  width: 50px;
+  width: 60px;
   height: 10px;
+  color: white;
+  background-color: black;
+  font-size: 20px;
 }
 
 
@@ -123,8 +144,12 @@ button:active {
 
 .input_login_box{
   width: 150px;
+  height: 20px;
   margin-top: 1px;
   margin-bottom: 5px;
+  color: white;
+  background-color: black;
+  font-size: 18px;
 }
 
 
@@ -142,6 +167,7 @@ button:active {
 
 .vlsm_table {
   border-collapse: collapse;
+  margin-top: 15px;
 }
 
 

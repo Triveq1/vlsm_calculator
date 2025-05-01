@@ -1,8 +1,21 @@
 var login_array = [
   ["admin","5321654987"],
   ["Leo","93176248"],
-  ["user", "4321"]
+  ["user","4321"]
 ]
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 function bubble_sort(arr) {
   let n = arr.length;
@@ -22,6 +35,25 @@ function bubble_sort(arr) {
 }
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 //This function generates 3 columns of n rows of input boxes for host count of each LAN
 function generate_network_size_input_boxes(){
   const number_of_networks = parseInt(document.getElementById("number_of_networks").value);
@@ -33,7 +65,7 @@ function generate_network_size_input_boxes(){
       row.className = "input_network_size_row";
 
       const box = document.createElement("input");
-      box.type = "number";
+      box.type = "text";
       box.id = "network_"+i+"_size" ; // network_5_size 
       box.placeholder = "hostů";
       box.className = "input_network_size_box"
@@ -51,6 +83,31 @@ for (let i = 0 ; i< login_array.length; i++){
   let hashed = str.split("").reverse().join("");
   login_array[i][1] = hashed;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 //This function generates the final table for VLSM
 function calculate_vlsm_table(){
@@ -90,22 +147,32 @@ function calculate_vlsm_table(){
 
 
   //Solve the network adresses
-  const bases_of_2 = [2,4,8,16,32,64,128,256]; 
+  const bases_of_2 = [2,4,8,16,32,64,128,256,512,1024,2048,4096,8192,16384,32768,65536,131072,262144,524288,1048576];
   var lan_host_count_original_array = [];
   var lan_host_count_sorted_array = [];
-  var lan_size_bitsize_adr_br = []; //is sorted as above and stores [size, bitsize ,net adres, broadcast]
-  var current_net_adr = 0;
+  var lan_size_bitsize_adr_br = []; //is sorted as above and stores [size, bitsize ,net adres, broadcast, mask] net adres and broad cast are stored as [255,255,255,255]
+  var current_net_adr = parseInt(document.getElementById("ipv44").value);
+  const octet_1_org = parseInt(document.getElementById("ipv41").value);
+  const octet_2_org = parseInt(document.getElementById("ipv42").value);
+  const octet_3_org = parseInt(document.getElementById("ipv43").value);
   for (let j = 0 ; j < number_of_networks ; j++) {
     lan_host_count_original_array.push(parseInt(document.getElementById("network_"+(j+1)+"_size" ).value) +2);
     lan_host_count_sorted_array.push(parseInt(document.getElementById("network_"+(j+1)+"_size" ).value) + 2);
   }
   //Sort duplicate of array
   var lan_host_count_sorted_array = bubble_sort(lan_host_count_sorted_array);
-
+  
   for (let x = number_of_networks-1 ; x >= 0 ; x--) {
-    for (let y = 0; y < 8 ; y++){
+    for (let y = 0; y < bases_of_2.length ; y++){
       if (lan_host_count_sorted_array[x]<=bases_of_2[y]){
-        lan_size_bitsize_adr_br.unshift([lan_host_count_sorted_array[x],bases_of_2[y],current_net_adr,current_net_adr+bases_of_2[y]-1]);
+        lan_size_bitsize_adr_br.unshift([
+
+          lan_host_count_sorted_array[x],
+          bases_of_2[y],
+          [octet_1_org, octet_2_org ,octet_3_org , current_net_adr],
+          [octet_1_org, octet_2_org ,octet_3_org , current_net_adr+bases_of_2[y]-1],
+          ([255,255,255,256-bases_of_2[y]])
+        ]);
         current_net_adr += bases_of_2[y]; 
         break;
       }
@@ -113,7 +180,52 @@ function calculate_vlsm_table(){
   }
 
 
-  //for every Lan network 
+  
+
+
+  //This takes care of situations where the prefix is other than /24
+  //forst for is for network adr, broadcast, mask
+  for(let adr = 0 ; adr < number_of_networks ; adr++){
+    
+    for (let i = 0 ; i < 3 ; i++){
+      
+    
+      //now lets take care of network adress so this for is for every octet starting from last (octet 4 [3]) exept for first octet bcs we cant really move its value anywhere
+      for (let o = 3 ; o > 0 ; o--){
+       
+        for (let x = lan_size_bitsize_adr_br[adr][2][o] ; x > 255 ; x -= 256){
+          //THIS LITTLE SUCKER REPEATED LIKE FUCKING 50 000 + TIMES AND DROPPED MY WHOLE FUCKING WEBSITE
+          lan_size_bitsize_adr_br[adr][2][o] -= 256;
+          lan_size_bitsize_adr_br[adr][2][o-1] += 1 
+        }
+      }
+      //now lets take care of broad cast (this vill be the same as network adres)
+      for (let o = 3 ; o > 0 ; o--){
+        
+        for (let x = lan_size_bitsize_adr_br[adr][3][o] ; x > 255 ; x -= 256){
+          
+          lan_size_bitsize_adr_br[adr][3][o] -= 256;
+          lan_size_bitsize_adr_br[adr][3][o-1] += 1 
+        }
+      }
+      //now lets take care of mask this will be almost the same as the first two cases 
+      for (let o = 3 ; o > 0 ; o--){
+        for (let x = lan_size_bitsize_adr_br[adr][4][o] ; x < 0 ; x += 256){
+          lan_size_bitsize_adr_br[adr][4][o] += 256;
+          lan_size_bitsize_adr_br[adr][4][o-1] -= 1 
+        }
+      }
+    }
+  }
+
+
+
+
+
+
+
+  
+  //this is the final stage of generating and filling the vlsm table
   for (let i = 0 ; i < number_of_networks ; i++) {
     const row = document.createElement("tr");
 
@@ -127,9 +239,6 @@ function calculate_vlsm_table(){
     hosts.textContent = document.getElementById("network_"+(i+1)+"_size" ).value;
     hosts.className = "table_box_text";
 
-
-    //Lan network first 3 octets
-    var network = ""+parseInt(document.getElementById("ipv41").value)+"."+parseInt(document.getElementById("ipv42").value)+"."+parseInt(document.getElementById("ipv43").value)+".";
     //Lan network address
     const network_adr = document.createElement("td");
     network_adr.className = "table_box_text";
@@ -142,24 +251,21 @@ function calculate_vlsm_table(){
     //Lan mask
     const mask = document.createElement("td");
     mask.className = "table_box_text";
-
+    
     for (let x = 0 ; x < lan_size_bitsize_adr_br.length ; x++) {
       const network_size =  parseInt(document.getElementById("network_"+(i+1)+"_size" ).value);
       if (network_size+2 == lan_size_bitsize_adr_br[x][0]){
-        network_adr.textContent = network+""+lan_size_bitsize_adr_br[x][2];
-        broadcast.textContent = network+""+lan_size_bitsize_adr_br[x][3];
-        range.textContent= ""+(lan_size_bitsize_adr_br[x][2]+1)+"-"+(lan_size_bitsize_adr_br[x][3]-1);
-        mask.textContent="255.255.255."+(256-lan_size_bitsize_adr_br[x][1]);
-        lan_size_bitsize_adr_br[x][0]=-9999999999;
+        network_adr.textContent = ""+lan_size_bitsize_adr_br[x][2][0]+"."+lan_size_bitsize_adr_br[x][2][1]+"."+lan_size_bitsize_adr_br[x][2][2]+"."+lan_size_bitsize_adr_br[x][2][3];
+        broadcast.textContent =""+lan_size_bitsize_adr_br[x][3][0]+"."+lan_size_bitsize_adr_br[x][3][1]+"."+lan_size_bitsize_adr_br[x][3][2]+"."+lan_size_bitsize_adr_br[x][3][3];
+        range.textContent= ""+
+        (""+lan_size_bitsize_adr_br[x][2][0]+"."+lan_size_bitsize_adr_br[x][2][1]+"."+lan_size_bitsize_adr_br[x][2][2]+"."+(lan_size_bitsize_adr_br[x][2][3]+1))
+        +"-"+
+        (""+lan_size_bitsize_adr_br[x][3][0]+"."+lan_size_bitsize_adr_br[x][3][1]+"."+lan_size_bitsize_adr_br[x][3][2]+"."+(lan_size_bitsize_adr_br[x][3][3]-1));
+        mask.textContent=""+lan_size_bitsize_adr_br[x][4][0]+"."+lan_size_bitsize_adr_br[x][4][1]+"."+lan_size_bitsize_adr_br[x][4][2]+"."+lan_size_bitsize_adr_br[x][4][3];
+        lan_size_bitsize_adr_br[x][0]=-99999999999;
         break;
       }
     }
-
-
-
-
-  
-    
 
     //appending all the boxes into one row
     row.appendChild(name);
@@ -174,6 +280,94 @@ function calculate_vlsm_table(){
   container.appendChild(table);
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+function check_prefix_size_against_host_count(){
+  const prefix = parseInt(document.getElementById("prefix").value);
+  const max_size = (2**(32-prefix));
+  const network_count = parseInt(document.getElementById("number_of_networks").value)
+  const bases_of_2 = [2,4,8,16,32,64,128,256,512,1024,2048,4096,8192,16384,32768,65536,131072,262144,524288,1048576];
+  var size = 0;
+  for(let i = 0 ; i < network_count ; i++){
+    const network_size =  parseInt(document.getElementById("network_"+(i+1)+"_size" ).value);
+    for(let x = 0 ; x < bases_of_2.length ; x++){
+      if (network_size <= bases_of_2[x]){
+        size += bases_of_2[x];
+        break;
+      }
+    }
+
+  }
+  if (max_size >= size){
+    console.log("max size ="+max_size);
+    console.log("size = "+size);
+    calculate_vlsm_table();
+  } else {
+    console.log("max size ="+max_size);
+    console.log("size = "+size);
+    const container = document.getElementById("invalid_name_or_username");
+    container.innerHTML = "";
+    const a = document.createElement("p");
+    a.className = "error_text"
+    a.textContent = "Zadaný počet hostů se nevejde do zadaného prefixu !!!";
+    container.appendChild(a); 
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 function check_for_calculate_vlsm_table(){
   const username = document.getElementById("username").value;
   const password = document.getElementById("password").value;
@@ -183,13 +377,14 @@ function check_for_calculate_vlsm_table(){
   for (let i = 0 ; i < login_array.length ; i++){
     try_count++ ;
     if ((username == login_array[i][0]) && (password == login_array[i][1])) {
-      calculate_vlsm_table();
+      check_prefix_size_against_host_count()
       break;
     }else if (try_count== (login_array.length)){
       const a = document.createElement("p");
       a.className = "error_text"
       a.textContent = "Špatné jméno nebo heslo !!!";
       container.appendChild(a); 
+      break;
     }
   }
   

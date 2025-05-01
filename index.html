@@ -21,22 +21,25 @@
 
       <p class="IPv4_input_box_in_one_row_top_text">IPv4 : </p> 
         <div class="IPv4_input_box_in_one_row">
-          <input type="number" id="ipv41" placeholder="192" value="192">
-          <input type="number" id="ipv42" placeholder="168" value="168">
-          <input type="number" id="ipv43" placeholder="10" value="10">
-          <input type="number" id="ipv44" placeholder="0" value="0">
+          <input class="IPv4_input_box_style" type="text" id="ipv41" placeholder="192" value="192">
+          <p class="IPv4_bold_font_for_prefix" >.</p>
+          <input class="IPv4_input_box_style" type="text" id="ipv42" placeholder="168" value="168">
+          <p class="IPv4_bold_font_for_prefix" >.</p>
+          <input class="IPv4_input_box_style" type="text" id="ipv43" placeholder="10" value="10">
+          <p class="IPv4_bold_font_for_prefix" >.</p>
+          <input class="IPv4_input_box_style" type="text" id="ipv44" placeholder="0" value="0">
+          <p class="IPv4_bold_font_for_prefix" >/</p>
+          <input class="IPv4_input_box_style" type="text" id="prefix" palceholder="24" value="24">
         </div>
-        <br>
         <br>
         
 
       <p class="IPv4_input_box_in_one_row_top_text">Celkový počet sítí (Lan + Wan):</p>
-        <input class="input_total_number_of_lan_wan" type="number" id="number_of_networks" placeholder="Počet sítí" required />
+        <input class="input_total_number_of_lan_wan" type="text" id="number_of_networks" placeholder="Počet sítí" required />
         <br>
         <button type="button" onclick="generate_network_size_input_boxes()">Pokračovat</button>
         <div id="network_size_input_boxes_container">
         </div>
-        <br>
         <br>
 
       <p class="IPv4_input_box_in_one_row_top_text_2">Přihlásit pro použití:</p>
