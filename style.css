@@ -29,7 +29,7 @@ button {
   border: none;
   border-radius: 12px;
   cursor: pointer;
-  margin-top: 5px;
+  margin-top: 2px;
 }
 button:hover {
   background-color: #a00000;
@@ -79,7 +79,7 @@ button:active {
     text-align: left;
     color: white;
     line-height: 5px;
-    margin-bottom: 5px;
+    margin-bottom: 0px;
 }
 .IPv4_input_box_style {
   background-color: black;
@@ -109,7 +109,7 @@ button:active {
   background-color: black;
   color: white;
   margin-bottom: 5px;
-  margin-top: 5px;
+  margin-top: 10px;
   font-size: 20px;
   height: 15px;
   width: 100px;

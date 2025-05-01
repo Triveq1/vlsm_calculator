@@ -179,7 +179,7 @@ function calculate_vlsm_table(){
     }
   }
 
-
+     
   
 
 
