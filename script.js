@@ -18,6 +18,8 @@ var login_array = [
 
 
 function bubble_sort(arr) {
+  console.log("FUNCTION : Sorting array with Bubble-sort.......");
+  console.log("Starting array = "+arr+".......");
   let n = arr.length;
   let swapped;
   do {
@@ -31,6 +33,7 @@ function bubble_sort(arr) {
     }
     n--;
   } while (swapped);
+  console.log("Sorted array = "+arr+".......");
   return arr;
 }
 
@@ -54,13 +57,15 @@ function bubble_sort(arr) {
 
 
 
-//This function generates 3 columns of n rows of input boxes for host count of each LAN
+//This function generates the boxes for inputing host-count(Lan size) of each network (generated count depends on nuber of networks) 
 function generate_network_size_input_boxes(){
+  console.log("FUNCTION : Generating network size input boxes.......");
   const number_of_networks = parseInt(document.getElementById("number_of_networks").value);
   const container = document.getElementById("network_size_input_boxes_container");
   container.innerHTML = "";
 
   for (let i = 1; i <= number_of_networks ; i++ ){
+      console.log("Generating size input box for LAN "+i+".......");
       const row = document.createElement("div");
       row.className = "input_network_size_row";
 
@@ -77,7 +82,9 @@ function generate_network_size_input_boxes(){
       row.appendChild(box);
       container.appendChild(row);
   }
+  console.log("Printing size input boxes.......");
 }
+
 for (let i = 0 ; i< login_array.length; i++){
   let str = login_array[i][1];
   let hashed = str.split("").reverse().join("");
@@ -111,6 +118,7 @@ for (let i = 0 ; i< login_array.length; i++){
 
 //This function generates the final table for VLSM
 function calculate_vlsm_table(){
+  console.log("FUNCTION : Generating VLSM table.......");
   const container = document.getElementById("vlsm_table_container");
   container.innerHTML = "";
   const number_of_networks = parseInt(document.getElementById("number_of_networks").value);
@@ -147,7 +155,6 @@ function calculate_vlsm_table(){
 
 
   //Solve the network adresses
-  const bases_of_2 = [2,4,8,16,32,64,128,256,512,1024,2048,4096,8192,16384,32768,65536,131072,262144,524288,1048576];
   var lan_host_count_original_array = [];
   var lan_host_count_sorted_array = [];
   var lan_size_bitsize_adr_br = []; //is sorted as above and stores [size, bitsize ,net adres, broadcast, mask] net adres and broad cast are stored as [255,255,255,255]
@@ -159,26 +166,39 @@ function calculate_vlsm_table(){
     lan_host_count_original_array.push(parseInt(document.getElementById("network_"+(j+1)+"_size" ).value) +2);
     lan_host_count_sorted_array.push(parseInt(document.getElementById("network_"+(j+1)+"_size" ).value) + 2);
   }
+  console.log("List of Network sizes with (+2 for network,broadcast) "+lan_host_count_original_array+".......");
   //Sort duplicate of array
   var lan_host_count_sorted_array = bubble_sort(lan_host_count_sorted_array);
   
+  //Here is where the magic happens and all networks are generated their host_count, bit_size, network_adr, broadcast_adr, mask
+  console.log("Starting the main calculation.......");
+  //for every network 
   for (let x = number_of_networks-1 ; x >= 0 ; x--) {
-    for (let y = 0; y < bases_of_2.length ; y++){
-      if (lan_host_count_sorted_array[x]<=bases_of_2[y]){
+    //for every power of 2 all the way to 2**32 (maximum host count in 32bit system)
+    for (let y = 0; y < 32 ; y++){
+      //if host_count fits in current power of two then we create calculate the network
+      if (lan_host_count_sorted_array[x]<=(2**(y+1))){
+        console.log("LAN "+(x+1)+"fits in 2**"+(y+1)+" = "+(2**(y+1))+"......."); 
+        console.log("Creating LAN "+x+" with configuration :");
+        console.log("Size = "+lan_host_count_sorted_array[x]);
+        console.log("Bit-size = "+(2**(y+1)));
+        console.log("Net-address = "+octet_1_org+"."+octet_2_org+"."+octet_3_org+"."+current_net_adr);
+        console.log("Broadcast = "+octet_1_org+"."+octet_2_org+"."+octet_3_org+"."+(current_net_adr+(2**(y+1))-1));
+        console.log("Mask = 255.255.255."+(256-(2**(y+1))));
+        console.log("................................."); 
         lan_size_bitsize_adr_br.unshift([
-
           lan_host_count_sorted_array[x],
-          bases_of_2[y],
+          (2**(y+1)),
           [octet_1_org, octet_2_org ,octet_3_org , current_net_adr],
-          [octet_1_org, octet_2_org ,octet_3_org , current_net_adr+bases_of_2[y]-1],
-          ([255,255,255,256-bases_of_2[y]])
+          [octet_1_org, octet_2_org ,octet_3_org , current_net_adr+(2**(y+1))-1],
+          ([255,255,255,256-(2**(y+1))])
         ]);
-        current_net_adr += bases_of_2[y]; 
+        current_net_adr += (2**(y+1));
         break;
       }
     }
   }
-
+  console.log("All networks generated......."); 
      
   
 
@@ -186,35 +206,37 @@ function calculate_vlsm_table(){
   //This takes care of situations where the prefix is other than /24
   //forst for is for network adr, broadcast, mask
   for(let adr = 0 ; adr < number_of_networks ; adr++){
-    
-    for (let i = 0 ; i < 3 ; i++){
-      
-    
-      //now lets take care of network adress so this for is for every octet starting from last (octet 4 [3]) exept for first octet bcs we cant really move its value anywhere
-      for (let o = 3 ; o > 0 ; o--){
-       
-        for (let x = lan_size_bitsize_adr_br[adr][2][o] ; x > 255 ; x -= 256){
-          //THIS LITTLE SUCKER REPEATED LIKE FUCKING 50 000 + TIMES AND DROPPED MY WHOLE FUCKING WEBSITE
-          lan_size_bitsize_adr_br[adr][2][o] -= 256;
-          lan_size_bitsize_adr_br[adr][2][o-1] += 1 
-        }
+    console.log("Starting network re-calculations for LAN "+(adr+1)+" .......");
+    //now lets take care of network adress so this for is for every octet starting from last (octet 4 [3]) exept for first octet bcs we cant really move its value anywhere
+    for (let o = 3 ; o > 0 ; o--){
+      console.log("Starting re-calculation on octet "+(o+1)+".......");
+      for (let x = lan_size_bitsize_adr_br[adr][2][o] ; x > 255 ; x -= 256){
+        //THIS LITTLE SUCKER REPEATED LIKE FUCKING 50 000 + TIMES AND DROPPED MY WHOLE FUCKING WEBSITE JUST BECAUSE I MISSED "=" IN "x -= 256"
+        console.log("Original net-address = "+lan_size_bitsize_adr_br[adr][2]+".......");
+        lan_size_bitsize_adr_br[adr][2][o] -= 256;
+        lan_size_bitsize_adr_br[adr][2][o-1] += 1 
+        console.log("Shifted net-address = "+lan_size_bitsize_adr_br[adr][2]+".......");
+        console.log("Network-address re-calculation FINISHED.......");
       }
+    
       //now lets take care of broad cast (this vill be the same as network adres)
-      for (let o = 3 ; o > 0 ; o--){
-        
-        for (let x = lan_size_bitsize_adr_br[adr][3][o] ; x > 255 ; x -= 256){
-          
-          lan_size_bitsize_adr_br[adr][3][o] -= 256;
-          lan_size_bitsize_adr_br[adr][3][o-1] += 1 
-        }
+      for (let x = lan_size_bitsize_adr_br[adr][3][o] ; x > 255 ; x -= 256){ 
+        console.log("Original broadcast = "+lan_size_bitsize_adr_br[adr][3]+".......");
+        lan_size_bitsize_adr_br[adr][3][o] -= 256;
+        lan_size_bitsize_adr_br[adr][3][o-1] += 1 
+        console.log("Shifted broadcast = "+lan_size_bitsize_adr_br[adr][3]+".......");
+        console.log("Broadcast-address re-calculation FINISHED.......");
       }
-      //now lets take care of mask this will be almost the same as the first two cases 
-      for (let o = 3 ; o > 0 ; o--){
-        for (let x = lan_size_bitsize_adr_br[adr][4][o] ; x < 0 ; x += 256){
-          lan_size_bitsize_adr_br[adr][4][o] += 256;
-          lan_size_bitsize_adr_br[adr][4][o-1] -= 1 
-        }
+    
+    //now lets take care of mask this will be almost the same as the first two cases 
+      for (let x = lan_size_bitsize_adr_br[adr][4][o] ; x < 0 ; x += 256){
+        console.log("Original Mask = "+lan_size_bitsize_adr_br[adr][4]+".......");
+        lan_size_bitsize_adr_br[adr][4][o] += 256;
+        lan_size_bitsize_adr_br[adr][4][o-1] -= 1 
+        console.log("Shifted Mask = "+lan_size_bitsize_adr_br[adr][4]+".......");
+        console.log("Mask re-calculation FINISHED.......");
       }
+      console.log("Finished re-calculating octet "+(o+1)+".......");
     }
   }
 
@@ -227,6 +249,7 @@ function calculate_vlsm_table(){
   
   //this is the final stage of generating and filling the vlsm table
   for (let i = 0 ; i < number_of_networks ; i++) {
+    console.log("Constructig LAN "+(i+1)+".......");
     const row = document.createElement("tr");
 
     //Lan name
@@ -268,15 +291,23 @@ function calculate_vlsm_table(){
     }
 
     //appending all the boxes into one row
+    console.log("Appending LAN "+(i+1)+" to the VLSM table.......");
     row.appendChild(name);
     row.appendChild(hosts);
+    console.log("LAN "+(i+1)+" host count = "+hosts.textContent+".......");
     row.appendChild(network_adr);
+    console.log("LAN "+(i+1)+" network address = "+network_adr.textContent+".......");
     row.appendChild(range);
+    console.log("LAN "+(i+1)+" usable range = "+range.textContent+".......");
     row.appendChild(broadcast);
+    console.log("LAN "+(i+1)+" broadcast address = "+broadcast.textContent+".......");
     row.appendChild(mask);
+    console.log("LAN "+(i+1)+" mask = "+mask.textContent+".......");
     table.appendChild(row);
   }
   //finally append the full table into div
+  console.log("Calculation FINISHED printing generated VLSM table.......");
+  console.log("#########################################################");
   container.appendChild(table);
 }
 
@@ -317,28 +348,28 @@ function calculate_vlsm_table(){
 
 
 function check_prefix_size_against_host_count(){
+  console.log("FUNCTION : checking for Prefix x Host count size.......");
   const prefix = parseInt(document.getElementById("prefix").value);
   const max_size = (2**(32-prefix));
   const network_count = parseInt(document.getElementById("number_of_networks").value)
-  const bases_of_2 = [2,4,8,16,32,64,128,256,512,1024,2048,4096,8192,16384,32768,65536,131072,262144,524288,1048576];
   var size = 0;
   for(let i = 0 ; i < network_count ; i++){
     const network_size =  parseInt(document.getElementById("network_"+(i+1)+"_size" ).value);
-    for(let x = 0 ; x < bases_of_2.length ; x++){
-      if ((network_size+2) <= bases_of_2[x]){
-        size += bases_of_2[x];
+    for(let x = 0 ; x < 32 ; x++){
+      if ((network_size+2) <= (2**(x+1))){
+        size += (2**(x+1));
         break;
       }
     }
 
   }
+  console.log("Prefix allowed network size = "+max_size+".......");
+  console.log("Network inputed host size = "+size+".......");
   if (max_size >= size){
-    console.log("max size ="+max_size);
-    console.log("size = "+size);
+    console.log("Network inputed host size fits in Prefix allowed network size.......");
     calculate_vlsm_table();
   } else {
-    console.log("max size ="+max_size);
-    console.log("size = "+size);
+    console.log("Network inputed host size doesnt fit in Prefix allowed network size.......");
     const container = document.getElementById("invalid_name_or_username");
     container.innerHTML = "";
     const a = document.createElement("p");
@@ -369,6 +400,7 @@ function check_prefix_size_against_host_count(){
 
 
 function check_for_calculate_vlsm_table(){
+  console.log("FUNCTION : checking for Username x Password combination.......");
   const username = document.getElementById("username").value;
   const password = document.getElementById("password").value;
   var try_count = 0;
@@ -377,9 +409,11 @@ function check_for_calculate_vlsm_table(){
   for (let i = 0 ; i < login_array.length ; i++){
     try_count++ ;
     if ((username == login_array[i][0]) && (password == login_array[i][1])) {
+      console.log("Succesful login.......");
       check_prefix_size_against_host_count()
       break;
     }else if (try_count== (login_array.length)){
+      console.log("Wrong login, printing error message.......");
       const a = document.createElement("p");
       a.className = "error_text"
       a.textContent = "Špatné jméno nebo heslo !!!";
