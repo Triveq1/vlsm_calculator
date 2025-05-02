@@ -325,7 +325,7 @@ function check_prefix_size_against_host_count(){
   for(let i = 0 ; i < network_count ; i++){
     const network_size =  parseInt(document.getElementById("network_"+(i+1)+"_size" ).value);
     for(let x = 0 ; x < bases_of_2.length ; x++){
-      if (network_size <= bases_of_2[x]){
+      if ((network_size+2) <= bases_of_2[x]){
         size += bases_of_2[x];
         break;
       }
