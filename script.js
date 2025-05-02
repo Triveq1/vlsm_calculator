@@ -206,7 +206,7 @@ function calculate_vlsm_table(){
   //This takes care of situations where the prefix is other than /24
   //forst for is for network adr, broadcast, mask
   for(let adr = 0 ; adr < number_of_networks ; adr++){
-    console.log("Starting network re-calculations for LAN "+(adr+1)+" .......");
+    console.log("Starting network re-calculations for LAN "+(number_of_networks - adr)+" .......");
     //now lets take care of network adress so this for is for every octet starting from last (octet 4 [3]) exept for first octet bcs we cant really move its value anywhere
     for (let o = 3 ; o > 0 ; o--){
       console.log("Starting re-calculation on octet "+(o+1)+".......");
